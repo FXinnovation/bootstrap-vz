@@ -114,6 +114,8 @@ class RegisterAMI(Task):
 
 		if info.manifest.provider['virtualization'] == 'hvm':
 			registration_params['virtualization_type'] = 'hvm'
+			if not info.manifest.system['release'] in ['squeeze', 'wheezy']:
+				registration_params['sriov_net_support'] = 'simple'
 		else:
 			registration_params['virtualization_type'] = 'paravirtual'
 			akis_path = os.path.join(os.path.dirname(__file__), 'ami-akis.yml')

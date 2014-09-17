@@ -3,6 +3,21 @@ from bootstrapvz.common import phases
 from . import assets
 import os
 
+class ConfigureGrub(Task):
+	description = 'Creating grub config files for Grub'
+	phase = phases.system_modification
+	@classmethod
+	def run(cls, info):
+		grubd = os.path.join(info.root, 'etc/grub.d')
+
+		grub_def = os.path.join(info.root, 'etc/default/grub')
+		sed_i(grub_def, '^GRUB_TIMEOUT=[0-9]+', 'GRUB_TIMEOUT=0\n'
+		                                        'GRUB_HIDDEN_TIMEOUT=true')
+		sed_i(grub_def, '^#GRUB_TERMINAL=console', 'GRUB_TERMINAL=console')
+		sed_i(grub_def, '^GRUB_CMDLINE_LINUX_DEFAULT="quiet"', 'GRUB_CMDLINE_LINUX_DEFAULT="console=hvc0"')
+
+		from bootstrapvz.common.tools import log_check_call
+		log_check_call(['chroot', info.root, 'update-grub'])
 
 class ConfigurePVGrub(Task):
 	description = 'Creating grub config files for PVGrub'

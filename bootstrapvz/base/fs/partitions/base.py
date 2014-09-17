@@ -111,6 +111,7 @@ class BasePartition(AbstractPartition):
 		                          start=str(self.get_start() + self.pad_start),
 		                          end=str(self.get_end() - self.pad_end)))
 		# Create the partition
+		log_check_call(['parted', '--script', '--align', 'none', e.volume.device_path, "--", "mklabel msdos"])
 		log_check_call(['parted', '--script', '--align', 'none', e.volume.device_path,
 		                '--', create_command])
 

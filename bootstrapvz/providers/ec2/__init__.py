@@ -64,8 +64,6 @@ def resolve_tasks(taskset, manifest):
 	                tasks.connection.Connect,
 
 	                boot.BlackListModules,
-	                boot.DisableGetTTYs,
-	                tasks.network.EnableDHCPCDDNS,
 	                initd.AddExpandRoot,
 	                initd.RemoveHWClock,
 	                tasks.initd.AddEC2InitScripts,
@@ -74,6 +72,9 @@ def resolve_tasks(taskset, manifest):
 	                tasks.ami.RegisterAMI,
 	                ])
 
+	if manifest.system['release'] in ['squeeze', 'wheezy']:
+		taskset.add(boot.DisableGetTTYs)
+	        taskset.add(tasks.network.EnableDHCPCDDNS)
 	if manifest.volume['partitions']['type'] != 'none':
 		taskset.add(initd.AdjustExpandRootScript)
 
