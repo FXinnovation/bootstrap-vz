@@ -68,7 +68,7 @@ def resolve_tasks(taskset, manifest):
 	                initd.RemoveHWClock,
 	                tasks.initd.AddEC2InitScripts,
 	                initd.InstallInitScripts,
-
+			tasks.network.InstallNetworkingUDevHotplugAndDHCPSubinterface,
 	                tasks.ami.RegisterAMI,
 	                ])
 

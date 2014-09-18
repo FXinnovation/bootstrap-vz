@@ -1,7 +1,10 @@
 from bootstrapvz.base import Task
 from bootstrapvz.common import phases
+from shutil import copy
 from bootstrapvz.common.tasks import kernel
 import os.path
+import os, sys
+from . import assets
 
 
 class EnableDHCPCDDNS(Task):
@@ -26,6 +29,49 @@ class AddBuildEssentialPackage(Task):
 	@classmethod
 	def run(cls, info):
 		info.packages.add('build-essential')
+
+
+class InstallNetworkingUDevHotplugAndDHCPSubinterface(Task):
+	description = 'Setting up udev and DHCPD rules for EC2 networking'
+	phase = phases.package_installation
+
+	@classmethod
+	def run(cls, info):
+		script_src = os.path.join(assets, 'ec2')
+		script_dst = os.path.join(info.root, 'etc')
+                import stat
+		rwxr_xr_x = (stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR |
+			stat.S_IRGRP                | stat.S_IXGRP |
+			stat.S_IROTH                | stat.S_IXOTH)
+		x_all = stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH
+
+		
+		copy(os.path.join(script_src, '53-ec2-network-interfaces.rules'),
+		     os.path.join(script_dst, 'udev/rules.d/53-ec2-network-interfaces.rules'))
+                os.chmod(os.path.join(script_dst, 'udev/rules.d/53-ec2-network-interfaces.rules'), rwxr_xr_x)
+
+		os.mkdir(os.path.join(script_dst, 'sysconfig'), 0755)
+		os.mkdir(os.path.join(script_dst, 'sysconfig/network-scripts'), 0755)
+		copy(os.path.join(script_src, 'ec2net.hotplug'),
+		     os.path.join(script_dst, 'sysconfig/network-scripts/ec2net.hotplug'))
+		os.chmod(os.path.join(script_dst, 'sysconfig/network-scripts/ec2net.hotplug'), rwxr_xr_x)
+
+		copy(os.path.join(script_src, 'ec2net-functions'),
+		     os.path.join(script_dst, 'sysconfig/network-scripts/ec2net-functions'))
+		os.chmod(os.path.join(script_dst, 'sysconfig/network-scripts/ec2net-functions'), rwxr_xr_x)
+
+		copy(os.path.join(script_src, 'ec2dhcp.sh'),
+		     os.path.join(script_dst, 'dhcp/dhclient-exit-hooks.d/ec2dhcp.sh'))
+		os.chmod(os.path.join(script_dst, 'dhcp/dhclient-exit-hooks.d/ec2dhcp.sh'), rwxr_xr_x)
+
+		with open(os.path.join(script_dst, 'network/interfaces'), "a") as interfaces:
+		    interfaces.write("iface eth1 inet dhcp");
+		    interfaces.write("iface eth2 inet dhcp");
+		    interfaces.write("iface eth3 inet dhcp");
+		    interfaces.write("iface eth4 inet dhcp");
+		    interfaces.write("iface eth5 inet dhcp");
+		    interfaces.write("iface eth6 inet dhcp");
+		    interfaces.write("iface eth7 inet dhcp");
 
 
 class InstallEnhancedNetworking(Task):

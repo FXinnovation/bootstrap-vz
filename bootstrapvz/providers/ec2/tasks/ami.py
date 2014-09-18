@@ -7,6 +7,9 @@ from bootstrapvz.common.tasks import workspace
 from connection import Connect
 from . import assets
 import os.path
+import logging
+log = logging.getLogger(__name__)
+
 
 cert_ec2 = os.path.join(assets, 'certs/cert-ec2.pem')
 
@@ -127,3 +130,4 @@ class RegisterAMI(Task):
 			registration_params['sriov_net_support'] = 'simple'
 
 		info._ec2['image'] = info._ec2['connection'].register_image(**registration_params)
+		log.info('Image ID is ' + info._ec2['image'])
