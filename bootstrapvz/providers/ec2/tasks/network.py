@@ -3,7 +3,7 @@ from bootstrapvz.common import phases
 from shutil import copy
 from bootstrapvz.common.tasks import kernel
 import os.path
-import os, sys
+import os
 from . import assets
 
 
@@ -41,11 +41,9 @@ class InstallNetworkingUDevHotplugAndDHCPSubinterface(Task):
 		script_dst = os.path.join(info.root, 'etc')
                 import stat
 		rwxr_xr_x = (stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR |
-			stat.S_IRGRP                | stat.S_IXGRP |
-			stat.S_IROTH                | stat.S_IXOTH)
-		x_all = stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH
+			     stat.S_IRGRP | stat.S_IXGRP |
+			     stat.S_IROTH | stat.S_IXOTH)
 
-		
 		copy(os.path.join(script_src, '53-ec2-network-interfaces.rules'),
 		     os.path.join(script_dst, 'udev/rules.d/53-ec2-network-interfaces.rules'))
                 os.chmod(os.path.join(script_dst, 'udev/rules.d/53-ec2-network-interfaces.rules'), rwxr_xr_x)
@@ -65,13 +63,13 @@ class InstallNetworkingUDevHotplugAndDHCPSubinterface(Task):
 		os.chmod(os.path.join(script_dst, 'dhcp/dhclient-exit-hooks.d/ec2dhcp.sh'), rwxr_xr_x)
 
 		with open(os.path.join(script_dst, 'network/interfaces'), "a") as interfaces:
-		    interfaces.write("iface eth1 inet dhcp\n");
-		    interfaces.write("iface eth2 inet dhcp\n");
-		    interfaces.write("iface eth3 inet dhcp\n");
-		    interfaces.write("iface eth4 inet dhcp\n");
-		    interfaces.write("iface eth5 inet dhcp\n");
-		    interfaces.write("iface eth6 inet dhcp\n");
-		    interfaces.write("iface eth7 inet dhcp\n");
+		    interfaces.write("iface eth1 inet dhcp\n")
+		    interfaces.write("iface eth2 inet dhcp\n")
+		    interfaces.write("iface eth3 inet dhcp\n")
+		    interfaces.write("iface eth4 inet dhcp\n")
+		    interfaces.write("iface eth5 inet dhcp\n")
+		    interfaces.write("iface eth6 inet dhcp\n")
+		    interfaces.write("iface eth7 inet dhcp\n")
 
 
 class InstallEnhancedNetworking(Task):

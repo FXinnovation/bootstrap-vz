@@ -64,6 +64,9 @@ def resolve_tasks(taskset, manifest):
 	                tasks.connection.Connect,
 
 	                boot.BlackListModules,
+	                security.EnableShadowConfig,
+	                network.RemoveDNSInfo,
+	                network.ConfigureNetworkIF,
 	                initd.AddExpandRoot,
 	                initd.RemoveHWClock,
 	                tasks.initd.AddEC2InitScripts,
