@@ -16,13 +16,14 @@
 	"system": {
 		"release":      "jessie",
 		"architecture": "amd64",
+		"sections":     ["main", "contrib", "non-free"],
 		"bootloader":   "grub",
 		"timezone":     "UTC",
-		"locale":       "en_US",
+		"locale":       "zh_CN",
 		"charmap":      "UTF-8"
 	},
 	"packages": {
-		"mirror": "http://cloudfront.debian.net/debian",
+		"mirror": "http://ftp.cn.debian.org/debian",
 		"install": [ "awscli", "python-boto" ]
 	},
 	"volume": {

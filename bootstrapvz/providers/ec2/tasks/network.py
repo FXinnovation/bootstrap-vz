@@ -33,7 +33,7 @@ class AddBuildEssentialPackage(Task):
 
 class InstallNetworkingUDevHotplugAndDHCPSubinterface(Task):
 	description = 'Setting up udev and DHCPD rules for EC2 networking'
-	phase = phases.package_installation
+	phase = phases.system_modification
 
 	@classmethod
 	def run(cls, info):
@@ -65,13 +65,13 @@ class InstallNetworkingUDevHotplugAndDHCPSubinterface(Task):
 		os.chmod(os.path.join(script_dst, 'dhcp/dhclient-exit-hooks.d/ec2dhcp.sh'), rwxr_xr_x)
 
 		with open(os.path.join(script_dst, 'network/interfaces'), "a") as interfaces:
-		    interfaces.write("iface eth1 inet dhcp");
-		    interfaces.write("iface eth2 inet dhcp");
-		    interfaces.write("iface eth3 inet dhcp");
-		    interfaces.write("iface eth4 inet dhcp");
-		    interfaces.write("iface eth5 inet dhcp");
-		    interfaces.write("iface eth6 inet dhcp");
-		    interfaces.write("iface eth7 inet dhcp");
+		    interfaces.write("iface eth1 inet dhcp\n");
+		    interfaces.write("iface eth2 inet dhcp\n");
+		    interfaces.write("iface eth3 inet dhcp\n");
+		    interfaces.write("iface eth4 inet dhcp\n");
+		    interfaces.write("iface eth5 inet dhcp\n");
+		    interfaces.write("iface eth6 inet dhcp\n");
+		    interfaces.write("iface eth7 inet dhcp\n");
 
 
 class InstallEnhancedNetworking(Task):

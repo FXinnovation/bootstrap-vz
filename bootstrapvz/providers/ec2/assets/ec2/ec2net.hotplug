@@ -17,12 +17,13 @@
 
 # During init and before the network service is started, metadata is not
 # available. Exit without attempting to configure the elastic interface.
-if [ `/sbin/runlevel | /usr/bin/cut -d\  -f2` -lt 3 ]; then
+if [ `/sbin/runlevel | /usr/bin/cut -d\  -f2` -ne 5 ]; then
   exit
 fi
 if [ -f /dev/.in_sysinit ]; then
   exit
 fi
+
 
 . /etc/sysconfig/network-scripts/ec2net-functions
 
