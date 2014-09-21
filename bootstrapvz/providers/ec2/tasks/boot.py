@@ -1,4 +1,4 @@
-orom bootstrapvz.base import Task
+from bootstrapvz.base import Task
 from bootstrapvz.common import phases
 from . import assets
 import os
@@ -17,7 +17,7 @@ class ConfigureGrub(Task):
 		sed_i(grub_def, '^#GRUB_TERMINAL=console', 'GRUB_TERMINAL=console')
 		sed_i(grub_def, '^GRUB_CMDLINE_LINUX_DEFAULT="quiet"', 'GRUB_CMDLINE_LINUX_DEFAULT="console=hvc0"')
 
-		sed_i(grub_def, '^#GRUB_DISABLE_RECOVERY="true", 'GRUB_DISABLE_RECOVERY="true"')
+		sed_i(grub_def, '^#GRUB_DISABLE_RECOVERY="true"', 'GRUB_DISABLE_RECOVERY="true"')
 
 		from bootstrapvz.common.tools import log_check_call
 		log_check_call(['chroot', info.root, 'update-grub'])
