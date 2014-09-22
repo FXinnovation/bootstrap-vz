@@ -10,7 +10,7 @@
 		"workspace": "/target"
 	},
 	"image": {
-		"name":        "debian-{system.release}-{system.architecture}-{virtualization}-{system.locale}-{%Y}-{%m}-{%d}-{%H}-{%M}-ebs",
+		"name":        "debian-{system.release}-{system.architecture}-{virtualization}-{%Y}-{%m}-{%d}-{%H}-{%M}-ebs",
 		"description": "Debian {system.release} {system.architecture}"
 	},
 	"system": {
