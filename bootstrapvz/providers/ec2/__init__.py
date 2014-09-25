@@ -71,7 +71,6 @@ def resolve_tasks(taskset, manifest):
 	                initd.RemoveHWClock,
 	                tasks.initd.AddEC2InitScripts,
 	                initd.InstallInitScripts,
-			tasks.network.InstallNetworkingUDevHotplugAndDHCPSubinterface,
 	                tasks.ami.RegisterAMI,
 	                ])
 
@@ -80,6 +79,9 @@ def resolve_tasks(taskset, manifest):
 	        taskset.add(tasks.network.EnableDHCPCDDNS)
 	if manifest.volume['partitions']['type'] != 'none':
 		taskset.add(initd.AdjustExpandRootScript)
+
+	if not manifest.system['release'] in ['squeeze', 'wheezy']:
+		taskset.add(tasks.network.InstallNetworkingUDevHotplugAndDHCPSubinterface)
 
 	if manifest.system['bootloader'] == 'pvgrub':
 		taskset.add(grub.AddGrubPackage)
