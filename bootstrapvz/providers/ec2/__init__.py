@@ -111,6 +111,10 @@ def resolve_tasks(taskset, manifest):
 		                tasks.network.InstallEnhancedNetworking,
 		                kernel.UpdateInitramfs])
 
+	euca_broken_on_jessie=0
+	if manifest.volume['backing'].lower() == 's3' and euca_broken_on_jessie:
+		taskset.discard(tasks.ami.BundleImage)
+		taskset.add(tasks.ami.BundleImageEC2Tools)
 	taskset.update([filesystem.Format,
 	                volume.Delete,
 	                ])

@@ -2,11 +2,13 @@ from bootstrapvz.base import Task
 from bootstrapvz.common import phases
 from bootstrapvz.common.exceptions import TaskError
 from bootstrapvz.common.tools import log_check_call
+from bootstrapvz.common.tasks import apt
 from ebs import Snapshot
 from bootstrapvz.common.tasks import workspace
 from connection import Connect
 from . import assets
 import os.path
+import os
 import logging
 log = logging.getLogger(__name__)
 
@@ -31,6 +33,30 @@ class AMIName(Task):
 				raise TaskError(msg)
 		info._ec2['ami_name'] = ami_name
 		info._ec2['ami_description'] = ami_description
+
+
+class BundleImageEC2Tools(Task):
+        description = 'Bundling mounted volume'
+        phase = phases.system_cleaning
+        predecessors = [apt.AptClean]
+
+        @classmethod
+        def run(cls, info):
+		bundle_name = 'bundle-' + info.run_id
+		info._ec2['bundle_path'] = os.path.join(info.workspace, bundle_name)
+		arch = {'i386': 'i386', 'amd64': 'x86_64'}.get(info.manifest.system['architecture'])
+		os.environ["EC2_HOME"] = "/usr/local/ec2-ami-tools/"
+		log_check_call(['/usr/local/ec2-ami-tools/bin/ec2-bundle-vol',
+                                '--cert', info.credentials['certificate'],
+                                '--privatekey', info.credentials['private-key'],
+                                '--user', info.credentials['user-id'],
+                                '--ec2cert', cert_ec2,
+                                '--arch', arch,
+                                '--volume', info.root,
+                                '--destination', info.workspace,
+                                '--batch',
+				'--volume', info.root,
+                                '--prefix', info._ec2['ami_name']])
 
 
 class BundleImage(Task):
