@@ -38,11 +38,14 @@ def validate_manifest(data, validator, error):
 	backing = data['volume']['backing']
 	partition_type = data['volume']['partitions']['type']
 	enhanced_networking = data['provider']['enhanced_networking'] if 'enhanced_networking' in data['provider'] else None
+	from bootstrapvz.common.releases import get_release
+	release = get_release(data['system']['release'])
 
 	if virtualization == 'pvm' and bootloader != 'pvgrub':
 		error('Paravirtualized AMIs only support pvgrub as a bootloader', ['system', 'bootloader'])
 
-	if backing != 'ebs' and virtualization == 'hvm':
+	from bootstrapvz.common.releases import jessie
+	if backing != 'ebs' and virtualization == 'hvm' and release < jessie:
 			error('HVM AMIs currently only work when they are EBS backed', ['volume', 'backing'])
 
 	if backing == 's3' and partition_type != 'none':
