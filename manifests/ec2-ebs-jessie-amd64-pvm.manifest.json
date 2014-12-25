@@ -24,7 +24,7 @@
 	},
 	"packages": {
 		"mirror": "http://cloudfront.debian.net/debian",
-		"install": [ "awscli", "python-boto" ]
+		"install": [ "awscli", "python-boto", "apt-transport-https" ]
 	},
 	"volume": {
 		"backing": "ebs",

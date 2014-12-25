@@ -24,7 +24,7 @@
 	},
 	"packages": {
 		"mirror": "http://ftp.cn.debian.org/debian",
-		"install": [ "awscli", "python-boto" ]
+		"install": [ "awscli", "python-boto", "apt-transport-https" ]
 	},
 	"volume": {
 		"backing": "ebs",
