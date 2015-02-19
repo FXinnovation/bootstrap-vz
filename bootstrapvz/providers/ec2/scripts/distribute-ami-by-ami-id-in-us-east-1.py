@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2
 import boto.ec2
 import time
 import sys
