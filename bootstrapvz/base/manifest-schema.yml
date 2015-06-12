@@ -28,6 +28,8 @@ properties:
       mirror:
         type: string
         format: uri
+      keyring:
+        type: string
       tarball: {type: boolean}
       workspace:
         $ref: '#/definitions/path'
@@ -116,6 +118,7 @@ properties:
           $ref: '#/definitions/absolute_path'
         minItems: 1
       include-source-type: {type: boolean}
+      default-sources: {type: boolean}
     additionalProperties: false
   plugins:
     type: object

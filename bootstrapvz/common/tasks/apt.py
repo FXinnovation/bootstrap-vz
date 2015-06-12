@@ -26,17 +26,19 @@ class AddDefaultSources(Task):
 	def run(cls, info):
 		from bootstrapvz.common.releases import sid
 		include_src = info.manifest.packages.get('include-source-type', False)
+		default_sources = info.manifest.packages.get('default-sources', True)
 		components = ' '.join(info.manifest.packages.get('components', ['main']))
-		info.source_lists.add('main', 'deb     {apt_mirror} {system.release} ' + components)
-		if include_src:
-			info.source_lists.add('main', 'deb-src {apt_mirror} {system.release} ' + components)
-		if info.manifest.release != sid:
-			info.source_lists.add('main', 'deb     http://security.debian.org/  {system.release}/updates ' + components)
+		if default_sources:
+			info.source_lists.add('main', 'deb     {apt_mirror} {system.release} ' + components)
 			if include_src:
-				info.source_lists.add('main', 'deb-src http://security.debian.org/  {system.release}/updates ' + components)
-			info.source_lists.add('main', 'deb     {apt_mirror} {system.release}-updates ' + components)
-			if include_src:
-				info.source_lists.add('main', 'deb-src {apt_mirror} {system.release}-updates ' + components)
+				info.source_lists.add('main', 'deb-src {apt_mirror} {system.release} ' + components)
+			if info.manifest.release != sid:
+				info.source_lists.add('main', 'deb     http://security.debian.org/  {system.release}/updates ' + components)
+				if include_src:
+					info.source_lists.add('main', 'deb-src http://security.debian.org/  {system.release}/updates ' + components)
+				info.source_lists.add('main', 'deb     {apt_mirror} {system.release}-updates ' + components)
+				if include_src:
+					info.source_lists.add('main', 'deb-src {apt_mirror} {system.release}-updates ' + components)
 
 
 class AddBackports(Task):
